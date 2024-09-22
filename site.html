@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oko Bere</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Karty bankéře -->
+        <div class="dealer-section">
+            <h2>Karty Bankéře</h2>
+            <div class="dealer-cards">
+                <div class="card" id="dealerCard1">🂠</div>
+                <div class="card" id="dealerCard2">🂠</div>
+            </div>
+        </div>
+
+        <!-- Bank -->
+        <div class="bank-section">
+            <h2>Bank</h2>
+            <div id="bank">0 Kč</div>
+        </div>
+
+        <!-- Stav peněz -->
+        <div class="money-section">
+            <h2>Peněženka</h2>
+            <div id="money">1000 Kč</div>
+        </div>
+
+        <!-- Tvé karty -->
+        <div class="player-section">
+            <h2>Tvé Karty</h2>
+            <div class="player-cards">
+                <div class="card" id="playerCard1"></div>
+                <div class="card" id="playerCard2"></div>
+            </div>
+            <!-- Ovládací tlačítka -->
+            <div class="controls">
+                <button onclick="Get()">Táhnout kartu</button>
+                <button onclick="stand()">Stát</button>
+                <button onclick="resetGame()">Nová hra</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
