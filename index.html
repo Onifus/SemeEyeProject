@@ -7,38 +7,51 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <div class="bet-section">
+        <h2>Sázka:  <span id="betValue"></span></h2>
+        <p>hraje se o <span id="cash"></span></p>
+     
+    </div>
+
     <div class="container">
+
         <!-- Karty bankéře -->
         <div class="dealer-section">
             <h2>Karty Bankéře</h2>
-            <div class="dealer-cards">
-                <div class="card" id="dealerCard1">🂠</div>
-                <div class="card" id="dealerCard2">🂠</div>
-            </div>
+            <div class="dealer-cards"></div>
         </div>
 
         <!-- Bank -->
         <div class="bank-section">
             <h2>Bank</h2>
             <div id="bank">0 Kč</div>
+            <h2>Score</h2>
+            <div id="dealerscore">0</div>
         </div>
 
         <!-- Stav peněz -->
         <div class="money-section">
             <h2>Peněženka</h2>
             <div id="money">1000 Kč</div>
+            <h2>Score</h2>
+            <div id="score">0</div>
+        </div>
+
+        <!-- HP bar -->
+        <div class="hp-section">
+            <canvas id="hpBar"></canvas>
+            <button onclick="leave()">odejít</button>
         </div>
 
         <!-- Tvé karty -->
         <div class="player-section">
             <h2>Tvé Karty</h2>
-            <div class="player-cards">
-                <div class="card" id="playerCard1"></div>
-                <div class="card" id="playerCard2"></div>
-            </div>
+            <div class="player-cards"></div>
             <!-- Ovládací tlačítka -->
             <div class="controls">
-                <button onclick="Get()">Táhnout kartu</button>
+                <button onclick="bit()">Sázka</button>
+                <button onclick="get()">Táhnout kartu</button>
                 <button onclick="stand()">Stát</button>
                 <button onclick="resetGame()">Nová hra</button>
             </div>
