@@ -10,7 +10,7 @@
 
     <div class="bet-section">
         <h2>Sázka:  <span id="betValue"></span></h2>
-        <p>hraje se o <span id="cash"></span></p>
+        <p>Hraje se o <span id="cash"></span></p>
      
     </div>
 
@@ -41,7 +41,8 @@
         <!-- HP bar -->
         <div class="hp-section">
             <canvas id="hpBar"></canvas>
-            <button onclick="leave()">odejít</button>
+            <button onclick="leave()">Odejít</button>
+            <button onclick="showDealerCards()">Reveal</button>
         </div>
 
         <!-- Tvé karty -->
@@ -51,9 +52,10 @@
             <!-- Ovládací tlačítka -->
             <div class="controls">
                 <button onclick="bit()">Sázka</button>
-                <button onclick="get()">Táhnout kartu</button>
-                <button onclick="stand()">Stát</button>
+                <button onclick="winnerCheck()">Táhnout kartu</button>
+                <button onclick="stop()">Stát</button>
                 <button onclick="resetGame()">Nová hra</button>
+                
             </div>
         </div>
     </div>
