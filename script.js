@@ -15,23 +15,30 @@ cardArray = [
     ["ImageBasic/stojkakule.jpg", "ImageBasic/stojkacervene.jpg", "ImageBasic/stojkazaludy.jpg", "ImageBasic/stojkazelene.jpg", 11]
 ];
 
-var moneyList = [1000, 100, 1000];
+var stubbed = false;
+var moneyList = [0, 0, 0];
+if (stubbed) {
+    stubbedValues = 50000;
+     moneyList = [stubbedValues, stubbedValues, stubbedValues];    
+}
+
 
 var playerStop = false;
 var bitIsSet = false;
 var over = false;
 var bothStop = false;
 var cardPick = false;
-var topSecred = true;
+var topSecred = false;
 var bitCheck = false;
 var prohra = false;
 var newGame = false;
 
 var dealerCards = [];
 
+var maxHP = 0;
 var helpCounter = 0;
-var dealerSum = 0;
 var life = 3;
+var currentHP = 0;
 var value = 0;
 var playerScore = 0;
 var dealerScore = 0;
@@ -48,28 +55,70 @@ var dealerScore = 0;
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
-function bit() {
-    console.log("bit");
+function choooser(){
+
+    console.log("velikost pole je : " + getArrayCount());
+
+if (!over) {
+ 
+    getPlayerCard();
+   
+    dealerGet();
+    
+    if (helpCounter == 0) {
+        bitCheck = false;
+    }
+    winnerCheck();
+} else {
+    alert("Již jste ukončil hru");
+}
+console.log("playerScore: " + playerScore + " | dealerScore: " + dealerScore)
+
+}
+
+
+function bit(message1,message2) {
+
     if (cardPick) {
         if (!over) {
             if (!bitIsSet) {
+               
                 bitCheck = true;
-                var bit = prompt("Zadej hodnoty své vsázky", "");
-                var numberPattern = /^\d+$/; // Regulární výraz pro čísla
-                if (helpCounter > 0) {
-                    bitCheck = true;
-                }
-                helpCounter++;
-                if (numberPattern.test(bit) && bit.length > 0 && bit <= moneyList[0]) {
-                    document.getElementById('betValue').innerText = `${bit} KČ`;
-                    document.getElementById('bank').innerText = `${bit} KČ`;
-                    var totalcash = bit * 2;
-                    document.getElementById('cash').innerText = `${totalcash} KČ`;
-                    moneyList[life - 1] -= bit;
+                if (stubbed) {
+
+                    if (helpCounter > 0) {
+                        bitCheck = true;
+                    }
+                    helpCounter++;
+                    document.getElementById('betValue').innerText = `${moneyList[life-1]} Kč`;
+                    document.getElementById('bank').innerText = `${moneyList[life-1]} Kč`;
+                    var totalcash = moneyList[life-1] * 2;
+                    document.getElementById('cash').innerText = `${totalcash} Kč`;
+                   
+                    moneyList[life - 1] -= moneyList[life-1];
+                    
                     setMoney();
+                    document.getElementById('money').innerText = `${0} Kč`;
                     bitIsSet = true; // Zajistí, že uživatel nemůže vsadit znovu
-                } else {
-                    bit();
+                }else{
+                    var bitValue = prompt(message1,message2);
+                    var numberPattern = /^\d+$/; // Regulární výraz pro čísla
+                    if (helpCounter > 0) {
+                        bitCheck = true;
+                    }
+                    helpCounter++;
+                    if (numberPattern.test(bitValue) && bitValue.length > 0 && bitValue < (extractNumber(document.getElementById('money').innerHTML)+1)) {
+                        document.getElementById('betValue').innerText = `${bitValue} Kč`;
+                        document.getElementById('bank').innerText = `${bitValue} Kč`;
+                        var totalcash = bitValue * 2;
+                        document.getElementById('cash').innerText = `${totalcash} Kč`;
+                        moneyList[life - 1] -= bitValue;
+                      
+                        setMoney();
+                        bitIsSet = true; // Zajistí, že uživatel nemůže vsadit znovu
+                    } else {
+                        bit("Zadaná hodnota není platná, zadej prosím jinou", "Částka");
+                    }
                 }
             } else {
                 alert("Sázka již byla zadaná");
@@ -84,12 +133,11 @@ function bit() {
 
 
 function getPlayerCard() {
-    console.log("getPlayerCard");
+
     newGame = false;
+
     if (bitCheck) {
-        if (helpCounter == 0) {
-            bitCheck = false;
-        }
+
 
         cardPick = true;
         if (!over) {
@@ -100,7 +148,6 @@ function getPlayerCard() {
             cardImage.src = getRandomCard(true);
             cardImage.alt = 'Karta hráče';
             newCardDiv.appendChild(cardImage);
-            playerScore = value;
             document.getElementById('score').innerText = playerScore;
             playerCardsContainer.appendChild(newCardDiv);
 
@@ -110,6 +157,7 @@ function getPlayerCard() {
     } else {
         alert("Prvně si vsad");
     }
+
 }
 
 function stop() {
@@ -141,20 +189,23 @@ function stop() {
 /////////////////////////////////////////////////////////////////
 
 function dealerGet() {
-    console.log("dealerGet");
-    const newCard = getRandomCard(); // Získáme náhodnou kartu
-    dealerCards.push(newCard); // Přidáme do pole karet dealera
+    
+    if (bitCheck) {
+      
+        const newCard = getRandomCard(); // Získáme náhodnou kartu
+        dealerCards.push(newCard); // Přidáme do pole karet dealera
 
-    const dealerCardsContainer = document.querySelector('.dealer-cards');
-    const newCardDiv = document.createElement('div');
-    newCardDiv.classList.add('card');
+        const dealerCardsContainer = document.querySelector('.dealer-cards');
+        const newCardDiv = document.createElement('div');
+        newCardDiv.classList.add('card');
 
-    const cardImage = document.createElement('img');
-    cardImage.src = "ImageBasic/back.jpg"; // Zde bude zadní strana karty
-    cardImage.alt = 'Karta bankéře';
+        const cardImage = document.createElement('img');
+        cardImage.src = "ImageBasic/back.jpg"; // Zde bude zadní strana karty
+        cardImage.alt = 'Karta bankéře';
 
-    newCardDiv.appendChild(cardImage);
-    dealerCardsContainer.appendChild(newCardDiv); // Přidáme div s kartou do dealerových karet
+        newCardDiv.appendChild(cardImage);
+        dealerCardsContainer.appendChild(newCardDiv); // Přidáme div s kartou do dealerových karet
+    }
 }
 
 function showDealerCards() {
@@ -185,13 +236,13 @@ function showDealerCards() {
 /////////////////////////////////////////////////////////////////
 
 function extractNumber(str) {
-    console.log("extractNumber");
+
     const match = str.match(/\d+/); // Najde první číslo ve stringu
     return match ? parseInt(match[0], 10) : null; // Vrátí číslo nebo null, pokud nenajde číslo
 }
 
 function resetCardList() {
-    console.log("resetCardList");
+
     if (topSecred) {
         cardArray = [];
         cardArray = [
@@ -218,34 +269,35 @@ function resetCardList() {
 
 }
 function init() {
-    // enterMoney();
+    enterMoney("Zadej svůj počáteční kapitál", "částka");
     setMoney();
+    currentHP = 3;
+    maxHP= 3;
     drawHPBar();
     bitCheck = true;
+    console.log("["+moneyList[0]+"]"+"["+moneyList[1]+"]"+"["+moneyList[2]+"]")
 
 }
 
 function getRandomCard(IsPlayer = false) {
-    console.log("getRandomCard");
+
     // Vyber náhodný index pro cardArray
     const randomX = Math.floor(Math.random() * cardArray.length);
+        // Zjisti velikost druhého rozměru pole (počty karet), bez posledního prvku
+        const numCards = cardArray[randomX].length - 1; // Odčítáme 1 pro hodnotu karty
 
+        // Generování randomY mezi 0 a numCards - 1 (ne včetně posledního prvku)
+        const randomY = Math.floor(Math.random() * numCards); // max je numCards - 1
     // Získání hodnoty poslední pozice v poli (5. prvek)
     if (IsPlayer) {
         value += cardArray[randomX][cardArray[randomX].length - 1];
+        playerScore = value;
     } else {
         dealerScore += cardArray[randomX][cardArray[randomX].length - 1];
     }
+    
+    
 
-    // Zjisti velikost druhého rozměru pole (počty karet), bez posledního prvku
-    const numCards = cardArray[randomX].length - 1; // Odčítáme 1 pro hodnotu karty
-
-    // Generování randomY mezi 0 a numCards - 1 (ne včetně posledního prvku)
-    const randomY = Math.floor(Math.random() * numCards); // max je numCards - 1
-
-    //console.log("Vybraný index x: " + randomX + " | Vybraný index y: " + randomY);
-    //console.log("Poslední hodnota karty: " + value);
-    midRoundCheck();
     // Odstranění karty ze seznamu
     const cardImage = cardArray[randomX].splice(randomY, 1)[0];
 
@@ -253,7 +305,8 @@ function getRandomCard(IsPlayer = false) {
 }
 
 function resetGame() {
-    console.log("resetGame");
+
+    currentHP = currentHP-1;
     resetCardList();
     const playerCardsContainer = document.querySelector('.player-cards');
     playerCardsContainer.innerHTML = '';
@@ -263,28 +316,117 @@ function resetGame() {
     document.getElementById('money').innerText = 0;
     document.getElementById('betValue').innerText = "";
     over = false;
-    playerScore = 0;
     life--;
+    prohra = false;
+    bothStop = false;
+    playerStop = false;
+    newGame = true;
+    bitCheck= true; 
+    bitIsSet = false; 
+    cardPick = false;
+    playerScore = 0;    
+    helpCounter = 0;
+    value = 0;
+    dealerScore = 0;
     setMoney();
+    drawHPBar();
+
+    document.getElementById('cash').innerText = "0 Kč";
+    document.getElementById('score').innerText = "0";
+    document.getElementById('money').innerText = "0 Kč";
+    document.getElementById('money').innerText = `${moneyList[life - 1]} Kč`;
+    document.getElementById('betValue').innerText = "0 Kč";
+    document.getElementById('bank').innerText = "0 Kč";
+    document.getElementById('score').innerText = "0 ";
+    document.getElementById('dealerscore').innerText = "0";
+    try {
+        playerCardsContainer = document.querySelector('.player-cards');
+        playerCardsContainer.innerHTML = '';
+        dealerCardsContainer = document.querySelector('.dealer-cards');
+        dealerCardsContainer.innerHTML = '';
+    } catch (error) {
+        
+    }
+}
+
+function startNewGame() {
+
+    if (stubbed) {
+        moneyList = [stubbedValues, stubbedValues, stubbedValues];    
+    }
+    disableButtons(false);
+    console.log("startNewGame");
+    init();
+    maxHP = 3;
+    currentHP = 3;
+    resetCardList();
+    const playerCardsContainer = document.querySelector('.player-cards');
+    playerCardsContainer.innerHTML = '';
+    const dealerCardsContainer = document.querySelector('.dealer-cards');
+    dealerCardsContainer.innerHTML = '';
+    document.getElementById('score').innerText = 0;
+    document.getElementById('money').innerText = 0;
+    document.getElementById('betValue').innerText = "";
+    over = false;
+    life=3;
+    prohra = false;
+    bothStop = false;
+    playerStop = false;
+    newGame = false;
+    bitCheck= true; 
+    bitIsSet = false; 
+    cardPick = false;
+    playerScore = 0;    
+    helpCounter = 0;
+    value = 0;
+    dealerScore = 0;
+    drawHPBar();
+
+    document.getElementById('cash').innerText = "0 Kč";
+    document.getElementById('score').innerText = "0";
+    document.getElementById('money').innerText = "0 Kč";
+    document.getElementById('money').innerText = `${moneyList[life - 1]} Kč`;
+    document.getElementById('betValue').innerText = "0 Kč";
+    document.getElementById('bank').innerText = "0 Kč";
+    document.getElementById('score').innerText = "0 ";
+    document.getElementById('dealerscore').innerText = "0";
+    try {
+        playerCardsContainer = document.querySelector('.player-cards');
+        playerCardsContainer.innerHTML = '';
+        dealerCardsContainer = document.querySelector('.dealer-cards');
+        dealerCardsContainer.innerHTML = '';
+    } catch (error) {
+        
+    }
 }
 
 function resetGameAfterWin(isPlayer) {
-    console.log("resetGameAfterWin");
+  
     resetCardList();
     if (isPlayer) {
         prohra = false;
         bothStop = false;
         playerStop = false;
         newGame = true;
-        playerScore = 0;
+        bitCheck= true; 
+        bitIsSet = false; 
+        cardPick = false;
+        playerScore = 0;    
+        helpCounter = 0;
+        value = 0;
         dealerScore = 0;
-        moneyList[life - 1] = moneyList[life - 1] + extractNumber(document.getElementById('cash').innerHTML);
+        updateHpBar();
+      
+         
+      
+        moneyList[life - 1] = (moneyList[life - 1] + extractNumber(document.getElementById('cash').innerHTML));
+        
         document.getElementById('cash').innerText = 0;
         document.getElementById('score').innerText = 0;
         document.getElementById('money').innerText = "";
-        document.getElementById('money').innerText = `${moneyList[life - 1]} KČ`;
+        document.getElementById('money').innerText = `${moneyList[life - 1]} Kč`;
         document.getElementById('betValue').innerText = "";
-        document.getElementById('bank').innerText = "0 KČ";
+        document.getElementById('bank').innerText = "0 Kč";
         document.getElementById('score').innerText = "0";
         document.getElementById('dealerscore').innerText = "0";
         const playerCardsContainer = document.querySelector('.player-cards');
@@ -292,19 +434,27 @@ function resetGameAfterWin(isPlayer) {
         const dealerCardsContainer = document.querySelector('.dealer-cards');
         dealerCardsContainer.innerHTML = '';
         console.log("----------------------------------------------");
+      
+        drawHPBar();
     } else {
+
+        cardPick = false;
         newGame = true;
         bothStop = false;
         playerStop = false;
         prohra = false;
+        bitCheck= true;
+        bitIsSet = false;  
         playerScore = 0;
+        helpCounter = 0;
+        value = 0;
         dealerScore = 0;
         document.getElementById('cash').innerText = 0;
         document.getElementById('score').innerText = 0;
         document.getElementById('money').innerText = 0;
-        document.getElementById('money').innerText = moneyList[life - 1];
+        document.getElementById('money').innerText = extractNumber(document.getElementById('cash').innerHTML);
         document.getElementById('betValue').innerText = "";
-        document.getElementById('bank').innerText = "0 KČ";
+        document.getElementById('bank').innerText = "0 Kč";
         document.getElementById('score').innerText = "0";
         document.getElementById('dealerscore').innerText = "0";
         const playerCardsContainer = document.querySelector('.player-cards');
@@ -312,32 +462,45 @@ function resetGameAfterWin(isPlayer) {
         const dealerCardsContainer = document.querySelector('.dealer-cards');
         dealerCardsContainer.innerHTML = '';
         console.log("----------------------------------------------");
-        
-
+        currentHP = (currentHP + extractNumber(document.getElementById('cash').innerHTML));
+        drawHPBar();
     }
 
 }
 
 function setMoney() {
-    document.getElementById('money').innerText = `${moneyList[life - 1]} KČ`;
+    document.getElementById('money').innerText = `${moneyList[life - 1]} Kč`;
 }
 
-function enterMoney() {
-    var person = prompt("Zadej svůj počáteční kapitál", "");
+function itsNumber(text){
     var numberPattern = /^\d+$/; // Regulární výraz pro čísla
-
-    if (numberPattern.test(person) && person.length > 0) {
-        moneyList = [Math.round(person / 3), Math.round(person / 3), Math.round(person / 3)];
+   
+    return  numberPattern.test(text);
+}
+function enterMoney(message1,message2) {
+    if (stubbed) {
+       
     } else {
-        enterMoney();
+        
+    
+        var moneyInpu = prompt(message1,message2);
+     
+
+        if (itsNumber(moneyInpu) && moneyInpu.length > 0 && moneyInpu > 2) {
+            moneyList = [Math.round(moneyInpu / 3), Math.round(moneyInpu / 3), Math.round(moneyInpu / 3)];
+        } else {
+            enterMoney("Zadaná hodnota není platná, zadej prosím jinou", "částka");
+        }
     }
 }
 
 function drawHPBar() {
+    document.getElementById('hpStatus').innerText = `Hp:${life}/${maxHP}`;
+   
     const canvas = document.getElementById('hpBar');
     const ctx = canvas.getContext('2d');
 
-    const hpWidth = (moneyList[life - 1] / moneyList[0]) * canvas.width;
+    const hpWidth = (life/ 3) * canvas.width;
 
     // Vymažeme předchozí bar (resetujeme canvas)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -352,87 +515,168 @@ function drawHPBar() {
     ctx.fillRect(0, 0, hpWidth, canvas.height);
 }
 
-function winnerCheck() {
-    console.log("winnerCheck");
-    if (!prohra) {
-        if (bitCheck) {
-            if (!bothStop) {
-                if (!playerStop) {
-                    if (playerScore === 21) {
-                        alert("player win 1");
-                    } else if (playerScore > 21) {
-                        alert("player lose 2");
-                    } else {
-                        getPlayerCard();
-                    }
-                }
-                if (dealerScore === 21) {
-                    alert("dealer win 3");
-                    prohra = true;
-                    resetGameAfterWin(false);
-                } else if (dealerScore > 21) {
-                    alert("player win");
-                    prohra = true;
-                    resetGameAfterWin(true);
-                } else {
-                    if (!newGame) {
-                        dealerGet();
-                    }
-
-                }
-            } else {
-                if (playerScore == 21) {
-                    alert("player win 5");
-                    resetGameAfterWin(true);
-                } else {
-                    if (dealerScore > 21) {
-                        alert("dealer lose 6");
-                    } else if (dealerScore == 21) {
-                        alert("dealer win 7");
-                        prohra = true;
-                        resetGameAfterWin(false);
-                    } else if (playerScore == 21) {
-                        alert("player win 8");
-                    } else if (playerScore == dealerScore) {
-                        alert("remíza");
-                        //todo dokončit
-                    } else if (dealerScore > playerScore) {
-                        alert("dealer win 9");
-                        prohra = true;
-                        resetGameAfterWin(false);
-                    } else {
-                        alert("player win 10");
-                        prohra = true;
-                        resetGameAfterWin(true);
-                    }
-                }
-            }
-        } else {
-            alert("Prvně si vsad");
-        }
-    }
+function updateHpBar(){
+    maxHP = maxHP;
+    currentHP = life;
+    drawHPBar();
 }
 
-function midRoundCheck() {
-    console.log("midRoundCheck");
-    if (playerScore == 21 && dealerScore == 21) {
-        alert("plychta");
-    }
-    if (playerScore > 21) {
-        alert("player lose 11");
-        prohra = true;
-        resetGameAfterWin(false);
-    } else if (dealerScore > 21) {
-        alert("dealer lose 12");
-        prohra = true;
-        resetGameAfterWin(true);
-    }
+function winnerCheck() {
+   
+    if (!prohra) {
+        let resultFound = false; // Příznak pro kontrolu, zda byla již výhra/prohra nalezena
 
+        if (!bothStop) {
+            if (!playerStop) {
+                if (playerScore === 21) {
+                    prohra = false;
+                    resultFound = true; // Výhra nalezena
+                    popUpExit("player win 1",true);
+                } else if (playerScore > 21) {
+                    prohra = true;
+                    resultFound = true; // Prohra nalezena
+                    popUpExit("player lose 2",false);
+                }
+            }
+
+            if (!resultFound) { // Zkontrolujeme, zda již nebyla výhra/prohra nalezena
+                if (dealerScore === 21) {
+                    prohra = true;
+                    resultFound = true; // Výhra dealera nalezena
+                    popUpExit("dealer win 3",false);
+                } else if (dealerScore > 21) {
+
+                    prohra = false;
+                    resultFound = true; // Výhra hráče nalezena
+                    popUpExit("player win 4",true);
+                }
+            }
+        } else { // Oba hráči zastavili
+            if (playerScore === 21) {
+                prohra = false; // Ujistíme se, že prohra se nastaví
+                resultFound = true; // Výhra hráče nalezena
+                popUpExit("player win 5",true);
+            } else if (dealerScore > 21) {
+                prohra = true; // Ujistíme se, že prohra se nastaví
+                resultFound = true; // Prohra dealera nalezena
+                popUpExit("dealer lose 6",true);
+            } else if (dealerScore === 21) {
+                prohra = true;
+                resultFound = true; // Výhra dealera nalezena
+                popUpExit("dealer win 7",false);
+            } else if (playerScore === playerScore) {
+                alert("remíza");
+                // todo: dokončit
+            } else if (dealerScore > playerScore) {
+                prohra = true;
+                resultFound = true; // Výhra dealera nalezena
+                popUpExit("dealer win 9",false);
+            } else {
+                prohra = false;
+                resultFound = true; // Výhra hráče nalezena
+                popUpExit("player win 10",true);
+            }
+        }
+    }
+    
+}
+
+function leave() {
+    window.close();
+    over = true;
+  
+}
+
+function popUpExit(message, isPlayer){
+    alert(message)
+   
+    if (prohra==true && (currentHP-1)<=0) {
+        showDealerCards();
+        setTimeout(() => {
+            if (confirm('Chcete pokračovat v nové hře?')) {
+                startNewGame();
+            } else {
+                over = true;
+                disableButtons(true);
+            }
+            }, 1000)
+    }else{
+
+        if (!extractNumber(document.getElementById('money').innerHTML)<= 0 || !prohra) {
+            showDealerCards();
+            setTimeout(() => {
+            if (confirm('Chcete pokračovat ve hře? ')) {
+                resetGameAfterWin(isPlayer);
+            } else {
+                over = true;
+                disableButtons(true);
+            }
+            }, 1000)
+        }else{
+           
+            showDealerCards();
+            if (confirm('Si na mizině - Chcete začít novou hru, máš ale o život meně? Momentálně máš ' + (life-1) + " životů")) {
+                resetGame(isPlayer);
+            } else {
+                over = true;
+                disableButtons(true);
+            }
+            
+        }
+    }
+    console.log("player life is set to " + life);
 }
 init();
 
-function leave() {
-    over = true;
+
+function getArrayCount(){
+    var arrayCount1 = 0;
+    for (var counterI = 0; counterI < cardArray.length; counterI++) {
+        arrayCount1 += cardArray[counterI].length; // Přičteme délku podpole
+    }
+   
+    return arrayCount1; // Vrátí celkový počet členů ve všech podpolích
+    
+}
+
+function disableButtons(enabled){
+    document.getElementById("revealButton").disabled = enabled; 
+    document.getElementById("bitButton").disabled = enabled; 
+    document.getElementById("getButton").disabled = enabled; 
+    document.getElementById("stopButton").disabled = enabled; 
+}
+
+function shop(message1,message2) {
+    const pricePerHeart = 5000;
+    const totalMoneyElement = document.getElementById("money");
+    
+    const totalMoney = parseInt(totalMoneyElement.innerText) || 0;
+
+    // Otevření dialogového okna pro vstup počtu srdíček
+    let shopMoney = prompt(message1,message2);
+
+    // Kontrola, zda je zadáno číslo a zda uživatel má dost peněz
+    if (itsNumber(shopMoney)) {
+        const numberOfHearts = parseInt(shopMoney);
+        const totalCost = numberOfHearts * pricePerHeart;
+
+        // Zajištění, že zůstatek nebude klesat pod 1 Kč
+        if (totalCost <= totalMoney - 1) {
+            // Odečtení peněz a aktualizace stavu peněz
+            totalMoneyElement.innerText = totalMoney - totalCost + " Kč";
+            maxHP++;
+            life++;
+            alert(`Koupili jste ${numberOfHearts} srdíček za ${totalCost} Kč.`);
+       
+
+        } else {
+            alert("Nemáte dostatek peněz na tento nákup.");
+        }
+    } else {
+        shop("Zadné množství nejde koupit, nebo jste zadal něco špatného","Počet Srdíček");
+    }
+    updateHpBar();
+
 }
 
 /////////////////////////////////////////////////////////////////
