@@ -117,6 +117,8 @@ button {
     cursor: pointer;
     margin: 5px;
     transition: background-color 0.2s;
+    width: 140px; /* Nastavte šířku tlačítek */
+    height: 50px; /* Nastavte výšku tlačítek */
 }
 
 button:hover {
@@ -141,4 +143,44 @@ canvas#hpBar {
     border: 2px solid #000;
     width: 90%;
     height: 30px;
+}
+
+.down{
+    width: 80px; /* Nastavte šířku tlačítek */
+    height: 30px; /* Nastavte výšku tlačítek */
+    display: flex; /* Flexbox pro centrování textu */
+    justify-content: center; /* Horizontální centrování */
+    align-items: center; /* Vertikální centrování */
+    text-align: center; /* Zarovnání textu na střed */
+    white-space: nowrap; /* Zamezení zalamování textu */
+}
+
+.top-buttons {
+    position: absolute; /* Umožňuje umístit tlačítka kdekoli */
+    top: 20px; /* Vzdálenost od vrchu */
+    right: 20px; /* Vzdálenost od pravého okraje */
+    display: flex; /* Flexbox pro zarovnání tlačítek vedle sebe */
+    gap: 10px; /* Vzdálenost mezi tlačítky */
+}
+
+.top-buttons button {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex; /* Flexbox pro centrování textu */
+    justify-content: center; /* Horizontální centrování */
+    align-items: center; /* Vertikální centrování */
+    text-align: center; /* Zarovnání textu na střed */
+    white-space: nowrap; /* Zamezení zalamování textu */
+    width: 30px; /* Nastavte šířku tlačítek */
+    height: 30px; /* Nastavte výšku tlačítek */
+}
+
+.top-buttons button:hover {
+    background-color: #c0392b;
 }
