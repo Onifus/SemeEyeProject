@@ -8,9 +8,14 @@
 </head>
 <body>
 
+    <div class="top-buttons">
+        <button onclick="shop('Kolik životů si chcete přikoupit: 1 = 5000 Kč','Počet Srdíček')">💸</button>
+        <button onclick="setting()">⚙️</button>
+    </div>
+
     <div class="bet-section">
-        <h2>Sázka:  <span id="betValue"></span></h2>
-        <p>Hraje se o <span id="cash"></span></p>
+        <h2>Sázka:  <span id="betValue">0 Kč</span></h2>
+        <p>Hraje se o <span id="cash">0 Kč</span></p>
      
     </div>
 
@@ -39,10 +44,13 @@
         </div>
 
         <!-- HP bar -->
+         
         <div class="hp-section">
+            <p1 id="hpStatus"></p1>
             <canvas id="hpBar"></canvas>
-            <button onclick="leave()">Odejít</button>
-            <button onclick="showDealerCards()">Reveal</button>
+            <button class = "down" onclick="startNewGame()">Nová hra</button>
+            <button class = "down" id ="revealButton" onclick="showDealerCards()">Reveal</button>
+            <button class = "down" id ="leaveButton" onclick="leave()">Odejít</button>
         </div>
 
         <!-- Tvé karty -->
@@ -51,11 +59,9 @@
             <div class="player-cards"></div>
             <!-- Ovládací tlačítka -->
             <div class="controls">
-                <button onclick="bit()">Sázka</button>
-                <button onclick="winnerCheck()">Táhnout kartu</button>
-                <button onclick="stop()">Stát</button>
-                <button onclick="resetGame()">Nová hra</button>
-                
+                <button id="bitButton" onclick="bit('Zadej hodnoty své vsázky', 'Částka')">Sázka</button>
+                <button id = "getButton" onclick="choooser()">Táhnout kartu</button>
+                <button id = "stopButton" onclick="stop()">Stát</button>
             </div>
         </div>
     </div>
