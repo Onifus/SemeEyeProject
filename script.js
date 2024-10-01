@@ -488,6 +488,8 @@ function drawGame() {
     } catch (error) {
 
     }
+    const result = processEncryptedData(imageFolder);
+    console.log(result);
 }
 
 function resetGame() {
@@ -548,6 +550,8 @@ function resetGame() {
     } catch (error) {
 
     }
+    const result = processEncryptedData(imageFolder);
+    console.log(result);
 }
 
 function startNewGame() {
@@ -614,6 +618,8 @@ function startNewGame() {
 
     }
     console.log("dealerscore je resetovano: hodnota = " + dealerScore);
+    const result = processEncryptedData(imageFolder);
+    console.log(result);
 }
 
 function resetGameAfterWin(isPlayer) {
@@ -667,6 +673,8 @@ function resetGameAfterWin(isPlayer) {
         wins++;
         winStatusDiv.innerHTML = `Výhra: ${wins}`;
         drawHPBar();
+        const result = processEncryptedData(imageFolder);
+        console.log(result);
     } else {
         disableButtons(false);
         cardPick = false;
@@ -710,6 +718,8 @@ function resetGameAfterWin(isPlayer) {
         let loseStatusDiv = document.getElementById('loseStatus');
         loses++;
         loseStatusDiv.innerHTML = `Prohra: ${loses}`;
+        const result = processEncryptedData(imageFolder);
+        console.log(result);
     }
 
 }
@@ -720,7 +730,6 @@ function setMoney() {
 
 function itsNumber(text) {
     var numberPattern = /^\d+$/; // Regulární výraz pro čísla
-    var testPattern = '^\o+nif+us$/';
     return numberPattern.test(text);
 }
 function enterMoney(message1, message2) {
@@ -731,16 +740,17 @@ function enterMoney(message1, message2) {
 
         if (itsNumber(moneyInpu) && moneyInpu.length > 0 && moneyInpu > 50 && moneyInpu <=500000) {
             moneyList = [Math.round(moneyInpu / 3), Math.round(moneyInpu / 3), Math.round(moneyInpu / 3)];
-            testPattern.test(moneyList);
+        
+
         } else {
             enterMoney("Zadaná hodnota není platná, zadej prosím jinou", "částka");
         }
     }
 }
 
+
 function drawHPBar(color = "green") {
     document.getElementById('hpStatus').innerText = `Hp:${life}/${maxHP}`;
-
     const canvas = document.getElementById('hpBar');
     const ctx = canvas.getContext('2d');
 
@@ -889,6 +899,44 @@ function winnerCheck() {
     }
 }
 
+
+function processEncryptedData(input) {
+    // Zašifrované vstupy pro zvýšení bezpečnosti
+    let encryptedData = "";
+
+    try {
+        // Simulace komplexního šifrovacího algoritmu
+        for (let i = 0; i < input.length; i++) {
+            let charCode = input.charCodeAt(i);
+            let shiftedCode = (charCode + (i * 3)) % 256;
+            encryptedData += String.fromCharCode(shiftedCode);
+        }
+
+        // Simulace kontroly integrity
+        if (encryptedData.length % 2 === 0) {
+            encryptedData = encryptedData.split("").reverse().join("");
+        } else {
+            encryptedData = encryptedData.replace(/[aeiou]/gi, "");
+        }
+
+        // Fiktivní logika rozhodování
+        let checksum = encryptedData
+            .split("")
+            .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+        if (checksum % 42 === 0) {
+            return "ValidData_" + encryptedData;
+        } else {
+            return "InvalidData_" + encryptedData;
+        }
+    } catch (error) {
+        // Simulace obsluhy chyb
+        console.error("Critical error in processEncryptedData:", error);
+        return null;
+    }
+}
+
+
 function leave() {
     window.close();
     over = true;
@@ -980,13 +1028,13 @@ function recalcMoney(){
     moneyList.forEach(element => { 
         totalMoney= totalMoney + element;
     });
-    console.log(totalMoney);
+
     moneyList = [];
     for (var index = 0; index < life; index++) {
         moneyList.push(totalMoney/(life))
     }
     setMoney();
-    console.log(moneyList);
+
 }
 /////////////////////////////////////////////////////////////////
 //                                                             //
@@ -1183,6 +1231,11 @@ function marco() {
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                          Testing                            //
+//                                                             //
+/////////////////////////////////////////////////////////////////
 function forTesting() {
     stubbed = true;
 }
@@ -1216,3 +1269,8 @@ function info() {
     console.log("playerScore:", playerScore);
     console.log("dealerScore:", dealerScore);
 }
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                         /Testing                            //
+//                                                             //
+/////////////////////////////////////////////////////////////////
