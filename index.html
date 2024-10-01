@@ -8,9 +8,60 @@
 </head>
 <body>
 
+    <!-- Varování o věkovém omezení -->
+    <div id="ageWarningModal" class="modal">
+        <div class="modal-content">
+            <h2>Upozornění</h2>
+            <p>Tato stránka je určena pouze pro osoby starší 18 let. Hazardní hry mohou být návykové. Hrajte zodpovědně!</p>
+            <p>Je vám více než 18 let?</p>
+            <button onclick="confirmAge(true)">Ano</button>
+            <button onclick="confirmAge(false)">Ne</button>
+        </div>
+    </div>
+
+    <div id="gameStatusContainer" class="game-status-container">
+        <div id="winStatus" class="game-status">Výhra: 0</div>
+        <div id="loseStatus" class="game-status">Prohra: 0</div>
+    </div>
+
     <div class="top-buttons">
-        <button onclick="shop('Kolik životů si chcete přikoupit: 1 = 5000 Kč','Počet Srdíček')">💸</button>
-        <button onclick="setting()">⚙️</button>
+        <button onclick="shop('Pozor! Maximum životů je 40. Kolik životů si chcete přikoupit: 1 = 5000 Kč','Počet Srdíček')">💸</button>
+        <button id="colorPickerBtn">⚙️</button>
+    </div>
+
+    <!-- Modalní okno -->
+    <div id="colorPickerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Uprava prostředí</h2>
+            
+
+            <label for="functionSelector">Pressets</label>
+            <select id="functionSelector" onchange="pressets()">
+                <option value="">-- Vyberte funkci --</option>
+                <option value="applyDefaultTheme">Defaultní režim</option>
+                <option value="applyDarkTheme">Tmavý režim</option>
+                <option value="applySepiaTheme">Sepie režim</option>
+                <option value="applyBlackAndWhite">Černobilý řežim</option>
+            </select>
+            <br><br>
+            <label for="backgroundColorPicker">Barva pozadí:</label>
+            <input type="color" id="backgroundColorPicker" value="#2c3e50">
+            <br><br>
+
+            <label for="fontColorPicker">Barva textu:</label>
+            <input type="color" id="fontColorPicker" value="#FFFFFF">
+            <br><br>
+
+            <label for="hpBarColorPicker">Barva HP baru:</label>
+            <input type="color" id="hpBarColorPicker" value="#00FF00">
+            <br><br>
+
+            <label for="sectionColorPicker">Barva sekci:</label>
+            <input type="color" id="sectionColorPicker" value="#16a085">
+            <br><br>
+            <button onclick="applyPlayerColor()">Použít barvy</button>
+        </div>
     </div>
 
     <div class="bet-section">
@@ -18,7 +69,6 @@
         <p>Hraje se o <span id="cash">0 Kč</span></p>
      
     </div>
-
     <div class="container">
 
         <!-- Karty bankéře -->

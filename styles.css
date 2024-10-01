@@ -15,6 +15,22 @@ body {
     position: relative;
 }
 
+.game-status-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 18px;
+    z-index: 1000; /* Ujistěte se, že je nad ostatními prvky */
+}
+
+.game-status {
+    margin-bottom: 5px; /* Vytvoří místo mezi výhrou a prohrou */
+}
+
 .container {
     display: grid;
     grid-template-columns: 1fr 150px;
@@ -143,6 +159,7 @@ canvas#hpBar {
     border: 2px solid #000;
     width: 90%;
     height: 30px;
+    
 }
 
 .down{
@@ -183,4 +200,86 @@ canvas#hpBar {
 
 .top-buttons button:hover {
     background-color: #c0392b;
+}
+
+#colorPickerBtn:hover {
+    background-color: #16a085;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #34495e;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 30%;
+    color: white;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #c0392b;
+    cursor: pointer;
+}
+
+/* Styl pro modální okno */
+#ageWarningModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.modal-content h2 {
+    color: #721c24;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content button:hover {
+    background-color: #ddd;
 }
