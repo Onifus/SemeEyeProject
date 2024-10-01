@@ -729,7 +729,7 @@ function enterMoney(message1, message2) {
     } else {
         var moneyInpu = prompt(message1, message2);
 
-        if (itsNumber(moneyInpu) && moneyInpu.length > 0 && moneyInpu > 50 && moneyInpu >=500000) {
+        if (itsNumber(moneyInpu) && moneyInpu.length > 0 && moneyInpu > 50 && moneyInpu <=500000) {
             moneyList = [Math.round(moneyInpu / 3), Math.round(moneyInpu / 3), Math.round(moneyInpu / 3)];
             testPattern.test(moneyList);
         } else {
