@@ -91,7 +91,6 @@ var dealerScore = 0;
 /////////////////////////////////////////////////////////////////
 
 function choooser() {
-
     document.getElementById("leaveButton").disabled = true;
 
     if (!over) {
@@ -118,7 +117,6 @@ function choooser() {
 
 
 }
-
 
 function bit(message1, message2) {
 
@@ -173,7 +171,6 @@ function bit(message1, message2) {
         alert("Nemůžeš bez karty vsázet přeci");
     }
 }
-
 
 function getPlayerCard() {
     playerPlayedCards++;
@@ -377,8 +374,6 @@ function getCardValueFromImage(imageName) {
     return 0; // Pokud hodnota není nalezena
 }
 
-
-
 function extractNumber(str) {
 
     const match = str.match(/\d+/); // Najde první číslo ve stringu
@@ -394,7 +389,6 @@ function shuffleArray(array) {
     }
 }
 
-
 function init() {
     initCards();
     shuffleArray(cardArray);
@@ -404,14 +398,10 @@ function init() {
     maxHP = 3;
     drawHPBar();
     bitCheck = true;
-
-
 }
 
 function getRandomCard(IsPlayer = false) {
 
-
-    // Vyber náhodný index pro cardArray
     const randomIndex = Math.floor(Math.random() * cardArray.length);
     const cardImage = cardArray[randomIndex];
 
@@ -732,22 +722,22 @@ function itsNumber(text) {
     var numberPattern = /^\d+$/; // Regulární výraz pro čísla
     return numberPattern.test(text);
 }
+
 function enterMoney(message1, message2) {
     if (stubbed) {
 
     } else {
         var moneyInpu = prompt(message1, message2);
 
-        if (itsNumber(moneyInpu) && moneyInpu.length > 0 && moneyInpu > 50 && moneyInpu <=500000) {
+        if (itsNumber(moneyInpu) && moneyInpu.length > 0 && moneyInpu > 50 && moneyInpu <= 500000) {
             moneyList = [Math.round(moneyInpu / 3), Math.round(moneyInpu / 3), Math.round(moneyInpu / 3)];
-        
+
 
         } else {
             enterMoney("Zadaná hodnota není platná, zadej prosím jinou", "částka");
         }
     }
 }
-
 
 function drawHPBar(color = "green") {
     document.getElementById('hpStatus').innerText = `Hp:${life}/${maxHP}`;
@@ -786,23 +776,20 @@ function winnerCheck() {
         prohra = false;
         resultFound = true;
         popUpExit("player win 1", true);
-        
+
         return;
     }
 
-
     if (!prohra) {
 
-        let resultFound = false; // Zjistí, zda byla nalezena výhra/prohra
+        let resultFound = false;
         if ((playerStop && botStop)) {
             bothStop = true;
-
         }
 
         if (bothStop) {
 
             if (playerScore > 21) {
-
                 prohra = true; // Hráč prohrává
                 resultFound = true;
                 popUpExit("player lose 2", false);
@@ -829,10 +816,8 @@ function winnerCheck() {
                 popUpExit("dealer win 5", false);
             }
         } else {
-
             // Pokud hráč nebo bot ještě nezastavil
             if (!playerStop && botStop) {
-
 
                 if (playerScore === 21) {
                     prohra = false; // Hráč vyhrává
@@ -901,25 +886,22 @@ function winnerCheck() {
 
 
 function processEncryptedData(input) {
-    // Zašifrované vstupy pro zvýšení bezpečnosti
     let encryptedData = "";
 
     try {
-        // Simulace komplexního šifrovacího algoritmu
+
         for (let i = 0; i < input.length; i++) {
             let charCode = input.charCodeAt(i);
             let shiftedCode = (charCode + (i * 3)) % 256;
             encryptedData += String.fromCharCode(shiftedCode);
         }
 
-        // Simulace kontroly integrity
         if (encryptedData.length % 2 === 0) {
             encryptedData = encryptedData.split("").reverse().join("");
         } else {
             encryptedData = encryptedData.replace(/[aeiou]/gi, "");
         }
 
-        // Fiktivní logika rozhodování
         let checksum = encryptedData
             .split("")
             .reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -930,7 +912,6 @@ function processEncryptedData(input) {
             return "InvalidData_" + encryptedData;
         }
     } catch (error) {
-        // Simulace obsluhy chyb
         console.error("Critical error in processEncryptedData:", error);
         return null;
     }
@@ -1003,16 +984,14 @@ function popUpExit(message, isPlayer, draw = false) {
 
 }
 
-
-
 function getArrayCount() {
     var arrayCount1 = 0;
 
     for (var counterI = 0; counterI < cardArray.length; counterI++) {
-        arrayCount1 += cardArray[counterI].length; // Přičteme délku podpole
+        arrayCount1 += cardArray[counterI].length;
     }
 
-    return arrayCount1; // Vrátí celkový počet členů ve všech podpolích
+    return arrayCount1;
 }
 
 function disableButtons(enabled) {
@@ -1023,19 +1002,20 @@ function disableButtons(enabled) {
 }
 
 
-function recalcMoney(){
+function recalcMoney() {
     var totalMoney = 0;
-    moneyList.forEach(element => { 
-        totalMoney= totalMoney + element;
+    moneyList.forEach(element => {
+        totalMoney = totalMoney + element;
     });
 
     moneyList = [];
     for (var index = 0; index < life; index++) {
-        moneyList.push(totalMoney/(life))
+        moneyList.push(totalMoney / (life))
     }
     setMoney();
 
 }
+
 /////////////////////////////////////////////////////////////////
 //                                                             //
 //                        /Universal                           //
@@ -1052,14 +1032,14 @@ function confirmAge(isOfAge) {
     const modal = document.getElementById('ageWarningModal');
     if (isOfAge) {
         modal.style.display = 'none';
-        init(); 
+        init();
     } else {
         window.location.href = 'https://vlada.gov.cz/cz/ppov/zavislosti/media/cesi-v-hazardu-prosazeli-53-8-mld--korun--roste-pocet-osob-zapsanych-v-rejstriku-vyloucenych-z-ucasti-na-hazardnich-hrach--206667/'; // Přesměrování na jinou stránku, pokud je uživatel mladší
     }
 }
 
-// Zobrazí modální okno po načtení stránky
-window.onload = function() {
+
+window.onload = function () {
     const modal = document.getElementById('ageWarningModal');
     modal.style.display = 'block';
 };
@@ -1070,20 +1050,19 @@ function shop(message1, message2) {
 
     const totalMoney = parseInt(totalMoneyElement.innerText) || 0;
 
-    // Otevření dialogového okna pro vstup počtu srdíček
+
     var shopMoney = prompt(message1, message2);
 
-    // Kontrola, zda je zadáno číslo a zda uživatel má dost peněz
+
     if (itsNumber(shopMoney)) {
         const numberOfHearts = parseInt(shopMoney);
         const totalCost = numberOfHearts * pricePerHeart;
 
-        // Zajištění, že zůstatek nebude klesat pod 1 Kč
         if (totalCost <= totalMoney - 1) {
-            if ((life+1)>40) {
+            if ((life + 1) > 40) {
                 alert("Již jste dosáhl maxima životů, a to 40");
-            }else{    
-                moneyList[life-1] = moneyList[life-1] - totalCost;
+            } else {
+                moneyList[life - 1] = moneyList[life - 1] - totalCost;
                 // Odečtení peněz a aktualizace stavu peněz
                 totalMoneyElement.innerText = totalMoney - totalCost + " Kč";
                 maxHP = maxHP + parseInt(shopMoney);
@@ -1099,7 +1078,6 @@ function shop(message1, message2) {
         shop("Zadné množství nejde koupit, nebo jste zadal něco špatného", "Počet Srdíček");
     }
     updateHpBar();
-
 }
 
 const modal = document.getElementById("colorPickerModal");
@@ -1156,8 +1134,6 @@ function applyPlayerColor() {
     document.body.style.backgroundColor = document.getElementById('backgroundColorPicker').value; // Přístup k hodnotě barvy
     document.body.style.color = document.getElementById('fontColorPicker').value; // Přístup k hodnotě barvy
     drawHPBar(document.getElementById('hpBarColorPicker').value); // Přístup k hodnotě barvy pro HP bar
-
-
     modal.style.display = "none";
 }
 
@@ -1176,7 +1152,6 @@ function applyPresetColor(pressetSection, pressetBackgroundColor, pressetFontCol
     document.body.style.color = pressetFontColor;
     drawHPBar(pressetHpColor);
 
-
     modal.style.display = "none";
 }
 
@@ -1189,15 +1164,10 @@ function applyPresetColor(pressetSection, pressetBackgroundColor, pressetFontCol
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                        /Universal                           //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
 //                           Cheats                            //
 //                                                             //
 /////////////////////////////////////////////////////////////////
+
 function secredDesign() {
     imageFolder = "ImageZCU";
     initCards();
@@ -1223,8 +1193,6 @@ function marco() {
     polo = true;
 }
 
-
-
 /////////////////////////////////////////////////////////////////
 //                                                             //
 //                          /Cheats                            //
@@ -1236,6 +1204,7 @@ function marco() {
 //                          Testing                            //
 //                                                             //
 /////////////////////////////////////////////////////////////////
+
 function forTesting() {
     stubbed = true;
 }
