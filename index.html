@@ -10,7 +10,7 @@
 
     <!-- Varování o věkovém omezení -->
     <div id="ageWarningModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content-age">
             <h2>Upozornění</h2>
             <p>Tato stránka je určena pouze pro osoby starší 18 let. Hazardní hry mohou být návykové. Hrajte zodpovědně!</p>
             <p>Je vám více než 18 let?</p>
@@ -36,13 +36,13 @@
             <h2>Uprava prostředí</h2>
             
 
-            <label for="functionSelector">Pressets</label>
+            <label for="functionSelector">Přednastavené barvy</label>
             <select id="functionSelector" onchange="pressets()">
                 <option value="">-- Vyberte funkci --</option>
-                <option value="applyDefaultTheme">Defaultní režim</option>
                 <option value="applyDarkTheme">Tmavý režim</option>
-                <option value="applySepiaTheme">Sepie režim</option>
-                <option value="applyBlackAndWhite">Černobilý řežim</option>
+                <option value="applySepiaTheme">Režim Sepie</option>
+                <option value="applyBlackAndWhite">Černobílý režim</option>
+                <option value="applyDefaultTheme">Defaultní režim</option>
             </select>
             <br><br>
             <label for="backgroundColorPicker">Barva pozadí:</label>
@@ -60,6 +60,14 @@
             <label for="sectionColorPicker">Barva sekci:</label>
             <input type="color" id="sectionColorPicker" value="#16a085">
             <br><br>
+
+            <label for="buttonColorPicker">Barva tlačítek:</label>
+            <input type="color" id="buttonColorPicker" value="#e74c3c">
+            <br><br>
+            <label for="buttonTextColorPicker">Barva textu tlačítek:</label>
+            <input type="color" id="buttonTextColorPicker" value="#e74c3c">
+            <br><br>
+
             <button onclick="applyPlayerColor()">Použít barvy</button>
         </div>
     </div>
@@ -98,9 +106,8 @@
         <div class="hp-section">
             <p1 id="hpStatus"></p1>
             <canvas id="hpBar"></canvas>
-            <button class = "down" onclick="startNewGame()">Nová hra</button>
-            <button class = "down" id ="revealButton" onclick="showDealerCards()">Reveal</button>
-            <button class = "down" id ="leaveButton" onclick="leave()">Odejít</button>
+            <button  id="newGameButton" class = "down" onclick="startNewGame()">Nová hra</button>
+            <button  id="leaveButton" class = "down" onclick="leave()">Odejít</button>
         </div>
 
         <!-- Tvé karty -->

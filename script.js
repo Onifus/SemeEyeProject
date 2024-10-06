@@ -4,6 +4,12 @@
 //                        Inicializace                         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
+
+//Tato proměnná slouží k úpravě fungovaní tlačítka leave
+var browserRes = false;
+//--------------------------------------
+
+
 var imageFolder = "ImageBasic";
 var cardArray = [];
 function initCards() {
@@ -49,6 +55,7 @@ if (stubbed) {
     moneyList = [stubbedValues, stubbedValues, stubbedValues];
 }
 
+
 var cardImage;
 var playerStop = false;
 var bitIsSet = false;
@@ -61,7 +68,7 @@ var newGame = false;
 var resultFound = false;
 var endLoop = false;
 var esoManieCheat = false;
-var polo = true;
+var polo = false;
 var botStop = false;
 
 var playerCard = [];
@@ -142,6 +149,7 @@ function bit(message1, message2) {
                     document.getElementById('money').innerText = `${0} Kč`;
                     bitIsSet = true; // Zajistí, že uživatel nemůže vsadit znovu
                 } else {
+                    
                     var bitValue = prompt(message1, message2);
                     var numberPattern = /^\d+$/; // Regulární výraz pro čísla
                     if (helpCounter > 0) {
@@ -154,7 +162,7 @@ function bit(message1, message2) {
                         var totalcash = bitValue * 2;
                         document.getElementById('cash').innerText = `${totalcash} Kč`;
                         moneyList[life - 1] -= bitValue;
-
+                  
                         setMoney();
                         bitIsSet = true; // Zajistí, že uživatel nemůže vsadit znovu
                     } else {
@@ -197,18 +205,21 @@ function getPlayerCard() {
 }
 
 function stop() {
+    if (cardPick && bitIsSet) {
+
     playerStop = true;
     do {
         if (!botDecision()) {
+            console.log("A1");
             bothStop = true;
-            console.log("As");
+            showDealerCards();
             winnerCheck();
             break;
         } else {
             if (!endLoop) {
-                console.log("Ad");
+                console.log("Ae");
                 dealerGet();
-
+          
             }
 
         }
@@ -216,10 +227,15 @@ function stop() {
             console.log("Ag");
             showDealerCards();
             endLoop = false;
+            winnerCheck();
             break;
         }
-        winnerCheck();
+     
     } while (true)
+
+    } else {
+        alert("Nemůžete stát, pokud ještě nemáte kartu nebo vsazeno");
+    }
 
 }
 
@@ -280,9 +296,10 @@ function botDecision() {
         return true; // Bot si lízne
     }
 
-    // Rozhodování na základě pravděpodobností
+    const averageProbability = probabilities.reduce((sum, prob) => sum + prob, 0) / probabilities.length;
+   
     let shouldDrawCard = false;
-    if (probabilities[5] > threshold) { // index 5 odpovídá hodnotě 10
+    if (averageProbability  > threshold) { // index 5 odpovídá hodnotě 10
         shouldDrawCard = true;
     }
 
@@ -302,7 +319,7 @@ function botDecision() {
 /////////////////////////////////////////////////////////////////
 
 function getRemainingCards() {
-    const valueArray = [0, 0, 0, 0, 0, 0, 0];
+    valueArray = [0, 0, 0, 0, 0, 0, 0];
     let totalCards = 0; // Celkový počet karet
 
     for (var index = 0; index < cardArray.length; index++) {
@@ -390,6 +407,7 @@ function shuffleArray(array) {
 }
 
 function init() {
+    
     initCards();
     shuffleArray(cardArray);
     enterMoney("Zadej svůj počáteční kapitál", "částka");
@@ -445,6 +463,7 @@ function drawGame() {
     bitCheck = true;
     bitIsSet = false;
     cardPick = false;
+
     endLoop = false;
     resultFound = false;
     dealerCards = [];
@@ -462,7 +481,7 @@ function drawGame() {
     dealerScore = 0;
     playerPlayedCards = 0;
     drawHPBar();
-
+    valueArray = [0, 0, 0, 0, 0, 0, 0];
     document.getElementById('cash').innerText = "0 Kč";
     document.getElementById('score').innerText = "0";
     document.getElementById('money').innerText = `${moneyList[life - 1] + draw} Kč`;
@@ -493,10 +512,7 @@ function resetGame() {
     dealerCardsContainer.innerHTML = '';
     document.getElementById('score').innerText = 0;
     document.getElementById('betValue').innerText = "";
-    let winStatusDiv = document.getElementById('winStatus');
-    winStatusDiv.innerHTML = "Výhra. 0";
-    let loseStatusDiv = document.getElementById('loseStatus');
-    loseStatusDiv.innerHTML = "Prohra: 0";
+
     over = false;
     life--;
     resultFound = false;
@@ -507,6 +523,7 @@ function resetGame() {
     bitCheck = true;
     bitIsSet = false;
     cardPick = false;
+
     endLoop = false;
     botStop = false;
     dealerCards = [];
@@ -524,7 +541,7 @@ function resetGame() {
     playerPlayedCards = 0;
     setMoney();
     drawHPBar();
-
+    valueArray = [0, 0, 0, 0, 0, 0, 0];
     document.getElementById('cash').innerText = "0 Kč";
     document.getElementById('score').innerText = "0";
     document.getElementById('money').innerText = "0 Kč";
@@ -572,6 +589,7 @@ function startNewGame() {
     newGame = false;
     bitCheck = true;
     bitIsSet = false;
+
     endLoop = false;
     resultFound = false;
     cardPick = false;
@@ -590,7 +608,7 @@ function startNewGame() {
     dealerCards = [];
     playerPlayedCards = 0;
     drawHPBar();
-
+    valueArray = [0, 0, 0, 0, 0, 0, 0];
     document.getElementById('cash').innerText = "0 Kč";
     document.getElementById('score').innerText = "0";
     document.getElementById('money').innerText = "0 Kč";
@@ -624,6 +642,7 @@ function resetGameAfterWin(isPlayer) {
         bitIsSet = false;
         resultFound = false;
         cardPick = false;
+        valueArray = [0, 0, 0, 0, 0, 0, 0];
         endLoop = false;
         botStop = false;
         if (!esoManieCheat) {
@@ -681,7 +700,8 @@ function resetGameAfterWin(isPlayer) {
         if (!polo) {
             polo = false;
         }
-
+        valueArray = [0, 0, 0, 0, 0, 0, 0];
+        endLoop = false;
         botStop = false;
         playerScore = 0;
         helpCounter = 0;
@@ -689,10 +709,10 @@ function resetGameAfterWin(isPlayer) {
         dealerScore = 0;
         playerPlayedCards = 0;
         dealerCards = [];
+
         document.getElementById('cash').innerText = 0;
         document.getElementById('score').innerText = 0;
-        document.getElementById('money').innerText = 0;
-        document.getElementById('money').innerText = extractNumber(document.getElementById('cash').innerHTML);
+
         document.getElementById('betValue').innerText = "";
         document.getElementById('bank').innerText = "0 Kč";
         document.getElementById('score').innerText = "0";
@@ -721,48 +741,6 @@ function setMoney() {
 function itsNumber(text) {
     var numberPattern = /^\d+$/; // Regulární výraz pro čísla
     return numberPattern.test(text);
-}
-
-function enterMoney(message1, message2) {
-    if (stubbed) {
-
-    } else {
-        var moneyInpu = prompt(message1, message2);
-
-        if (itsNumber(moneyInpu) && moneyInpu.length > 0 && moneyInpu > 50 && moneyInpu <= 500000) {
-            moneyList = [Math.round(moneyInpu / 3), Math.round(moneyInpu / 3), Math.round(moneyInpu / 3)];
-
-
-        } else {
-            enterMoney("Zadaná hodnota není platná, zadej prosím jinou", "částka");
-        }
-    }
-}
-
-function drawHPBar(color = "green") {
-    document.getElementById('hpStatus').innerText = `Hp:${life}/${maxHP}`;
-    const canvas = document.getElementById('hpBar');
-    const ctx = canvas.getContext('2d');
-
-    const hpWidth = (life / 3) * canvas.width;
-
-    // Vymažeme předchozí bar (resetujeme canvas)
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Vykreslíme rámeček HP baru
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-    // Vykreslíme HP bar
-    ctx.fillStyle = color; // Barva HP (lze měnit podle stavu)
-    ctx.fillRect(0, 0, hpWidth, canvas.height);
-}
-
-function updateHpBar() {
-    maxHP = maxHP;
-    currentHP = life;
-    drawHPBar();
 }
 
 function winnerCheck() {
@@ -919,12 +897,52 @@ function processEncryptedData(input) {
 
 
 function leave() {
-    window.close();
-    over = true;
+    if (!browserRes) {
+        window.close(); 
+    } else {
+        window.location.href = 'https://www.hazardni-hrani.cz/narodni-linka-pro-odvykani-hrani/'; 
+    }
+  
+
 }
 
+
+function disableButtons(enabled) {
+
+    document.getElementById("bitButton").disabled = enabled;
+    document.getElementById("getButton").disabled = enabled;
+    document.getElementById("stopButton").disabled = enabled;
+}
+
+
+function recalcMoney() {
+    var totalMoney = 0;
+    moneyList.forEach(element => {
+        totalMoney = totalMoney + element;
+    });
+
+    moneyList = [];
+    for (var index = 0; index < life; index++) {
+        moneyList.push(totalMoney / (life))
+    }
+    setMoney();
+
+}
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                        /Universal                           //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                            GUI                              //
+//                                                             //
+/////////////////////////////////////////////////////////////////
 function popUpExit(message, isPlayer, draw = false) {
     disableButtons(true);
+    console.log("endLoop true")
     endLoop = true;
     alert(message)
 
@@ -983,50 +1001,47 @@ function popUpExit(message, isPlayer, draw = false) {
     }
 
 }
+function enterMoney(message1, message2) {
+    if (stubbed) {
 
-function getArrayCount() {
-    var arrayCount1 = 0;
+    } else {
+        var moneyInpu = prompt(message1, message2);
 
-    for (var counterI = 0; counterI < cardArray.length; counterI++) {
-        arrayCount1 += cardArray[counterI].length;
+        if (itsNumber(moneyInpu) && moneyInpu.length > 0 && moneyInpu > 50 && moneyInpu <= 500000) {
+            moneyList = [Math.round(moneyInpu / 3), Math.round(moneyInpu / 3), Math.round(moneyInpu / 3)];
+
+
+        } else {
+            enterMoney("Zadaná hodnota není platná, zadej prosím jinou", "částka");
+        }
     }
-
-    return arrayCount1;
 }
 
-function disableButtons(enabled) {
-    document.getElementById("revealButton").disabled = enabled;
-    document.getElementById("bitButton").disabled = enabled;
-    document.getElementById("getButton").disabled = enabled;
-    document.getElementById("stopButton").disabled = enabled;
+function drawHPBar(color = "green") {
+    document.getElementById('hpStatus').innerText = `Hp:${life}/${maxHP}`;
+    const canvas = document.getElementById('hpBar');
+    const ctx = canvas.getContext('2d');
+
+    const hpWidth = (life / 3) * canvas.width;
+
+    // Vymažeme předchozí bar (resetujeme canvas)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Vykreslíme rámeček HP baru
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    // Vykreslíme HP bar
+    ctx.fillStyle = color; // Barva HP (lze měnit podle stavu)
+    ctx.fillRect(0, 0, hpWidth, canvas.height);
 }
 
-
-function recalcMoney() {
-    var totalMoney = 0;
-    moneyList.forEach(element => {
-        totalMoney = totalMoney + element;
-    });
-
-    moneyList = [];
-    for (var index = 0; index < life; index++) {
-        moneyList.push(totalMoney / (life))
-    }
-    setMoney();
-
+function updateHpBar() {
+    maxHP = maxHP;
+    currentHP = life;
+    drawHPBar();
 }
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
-//                        /Universal                           //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
-//                            GUI                              //
-//                                                             //
-/////////////////////////////////////////////////////////////////
 
 function confirmAge(isOfAge) {
     const modal = document.getElementById('ageWarningModal');
@@ -1089,6 +1104,7 @@ const backgroundPick = document.getElementById('backgroundColorPicker');
 const fontColorPick = document.getElementById('fontColorPicker');
 const hpBarColorPick = document.getElementById('hpBarColorPicker');
 const sections = document.querySelectorAll('.dealer-section, .player-section, .money-section, .bank-section, .bet-section');
+const buttons =  document.querySelectorAll('button');
 
 btn.onclick = function () {
     modal.style.display = "block";
@@ -1106,19 +1122,20 @@ window.onclick = function (event) {
 }
 
 function pressets() {
-    const selectedPressed = document.getElementById('functionSelector').value;
-    switch (selectedPressed) {
+    const selectedPreset = document.getElementById("functionSelector").value;
+
+    switch (selectedPreset) {
         case "applyDarkTheme":
-            applyPresetColor("#2c3e50", "#34495e", "#ecf0f1", "#e74c3c");
+            applyPresetColor("#2c3e50", "#34495e", "#ecf0f1", "#e74c3c", "#e74c3c", "#ffffff");  
             break;
         case "applySepiaTheme":
-            applyPresetColor("#704c3a", "#f9f0e3", "#c19a8d", "#ffcc00");
+            applyPresetColor("#704c3a", "#f9f0e3", "#c19a8d", "#ffcc00", "#c19a8d", "#000000");  
             break;
         case "applyBlackAndWhite":
-            applyPresetColor("#ffffff", "#000000", "#cccccc", "#888888");
+            applyPresetColor("#ffffff", "#000000", "#cccccc", "#888888", "#cccccc", "#000000");  
             break;
         default:
-            applyPresetColor("#16a085", "#2c3e50", "#ffffff", "#00FF00");
+            applyPresetColor("#16a085", "#2c3e50", "#ffffff", "#00FF00", "#e74c3c", "#ffffff");  
             break;
     }
 }
@@ -1126,35 +1143,74 @@ function pressets() {
 function applyPlayerColor() {
 
     const sectionColor = document.getElementById('sectionColorPicker').value;
+    const buttonColor = document.getElementById('buttonColorPicker').value;
+    const buttonFontColor = document.getElementById('buttonTextColorPicker').value;
 
     sections.forEach(section => {
         section.style.backgroundColor = sectionColor;
     });
 
-    document.body.style.backgroundColor = document.getElementById('backgroundColorPicker').value; // Přístup k hodnotě barvy
-    document.body.style.color = document.getElementById('fontColorPicker').value; // Přístup k hodnotě barvy
-    drawHPBar(document.getElementById('hpBarColorPicker').value); // Přístup k hodnotě barvy pro HP bar
+    buttons.forEach(button => {
+        button.style.backgroundColor = buttonColor;
+        button.style.color = buttonFontColor;
+    });
+    
+
+    document.body.style.backgroundColor = document.getElementById('backgroundColorPicker').value; 
+    document.body.style.color = document.getElementById('fontColorPicker').value;
+    drawHPBar(document.getElementById('hpBarColorPicker').value); 
     modal.style.display = "none";
 }
 
-function applyPresetColor(pressetSection, pressetBackgroundColor, pressetFontColor, pressetHpColor,) {
-
+function applyPresetColor(pressetSection, pressetBackgroundColor, pressetFontColor, pressetHpColor, pressetButton, pressetButtonText) {
+    // Nastavení barev pro Color Pickery
     document.getElementById('backgroundColorPicker').value = pressetBackgroundColor;
     document.getElementById('fontColorPicker').value = pressetFontColor;
     document.getElementById('sectionColorPicker').value = pressetSection;
     document.getElementById('hpBarColorPicker').value = pressetHpColor;
+    document.getElementById('buttonColorPicker').value = pressetButton;
+    document.getElementById('buttonTextColorPicker').value = pressetButtonText;
 
-    sections.forEach(section => {
+    // Aplikace barev na sekce
+    document.querySelectorAll('.dealer-section, .player-section, .money-section, .bank-section, .bet-section').forEach(section => {
         section.style.backgroundColor = pressetSection;
     });
 
+    // Aplikace barev na tlačítka
+    document.querySelectorAll('button').forEach(button => {
+        button.style.backgroundColor = pressetButton;  // Barva tlačítek
+        button.style.color = pressetButtonText;  // Barva textu v tlačítkách
+    });
+
+    // Aplikace barev na celé tělo stránky a text
     document.body.style.backgroundColor = pressetBackgroundColor;
     document.body.style.color = pressetFontColor;
+
+    // Kreslení HP baru
     drawHPBar(pressetHpColor);
 
+    // Zavření modálního okna (pokud je potřeba)
     modal.style.display = "none";
 }
 
+function addButtonForReveal(){
+      // Najít sekci "hp-section"
+      const hpSection = document.querySelector('.hp-section');
+    
+      // Vytvořit nové tlačítko
+      const revealButton = document.createElement('button');
+      
+      // Přidat atributy a vlastnosti tlačítka
+      revealButton.classList.add('down');              // Nastavení třídy
+      revealButton.id = 'revealButton';                // Nastavení ID
+      revealButton.textContent = 'Reveal';             // Text tlačítka
+      revealButton.onclick = function() {              // Funkce při kliknutí
+          showDealerCards();
+      };
+      
+      // Přidat tlačítko na konec hp-section
+      hpSection.appendChild(revealButton);
+}
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
@@ -1189,7 +1245,7 @@ function esoManie() {
 }
 
 function marco() {
-    console.log("Polo");
+    console.log("Cheat Active: Polo");
     polo = true;
 }
 
@@ -1206,7 +1262,9 @@ function marco() {
 /////////////////////////////////////////////////////////////////
 
 function forTesting() {
+    console.log("Testovací režim zahájen")
     stubbed = true;
+    addButtonForReveal();
 }
 
 function info() {
